@@ -1,5 +1,5 @@
 import { Command } from "@sapphire/framework";
-import { createTeam } from "../logic/manageTeams/manageTeams.js";
+import { createTeam } from "../logic/teams/index.js";
 import { tryCatch } from "../util/tryCatch.js";
 
 export class CreateTeamCommand extends Command {

@@ -1,6 +1,6 @@
 import { Command } from "@sapphire/framework";
 import { tryCatch } from "../util/tryCatch.js";
-import { addCompetitor } from "../logic/manageTeams/manageTeams.js";
+import { addCompetitor } from "../logic/teams/index.js";
 
 export class AddCompetitorCommand extends Command {
 	public constructor(context: Command.LoaderContext, options: Command.Options) {

@@ -10,8 +10,8 @@ type CreateTeamOpts = {
 };
 
 export async function addCompetitor(opts: AddCompetitorOpts) {
-	//todo check if the team already has max number of competitors
 
+	// get the number of competitors already in the team
 	const competitorsInTeam = await db.query.competitors.findMany({
 		where: (competitors, { eq }) => eq(competitors.teamId, opts.teamId),
 	});

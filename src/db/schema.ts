@@ -10,6 +10,9 @@ import {
 export const teams = pgTable("teams", {
 	id: serial().primaryKey(),
 	name: text().notNull().unique(),
+	//todo beneficiary name
+	//todo beneficiary link
+	//todo beneficiary blurb
 });
 
 export const competitors = pgTable("competitors", {
@@ -26,6 +29,8 @@ export const points = pgTable("points", {
 		.notNull(),
 	value: decimal({ mode: "number" }).notNull(),
 	date: timestamp({ mode: "date" }).notNull(),
+	//todo type
+	//todo link to message or thread with proof
 });
 
 export const pledges = pgTable("pledges", {

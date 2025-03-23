@@ -1,6 +1,6 @@
 import { Command } from "@sapphire/framework";
 import { tryCatch } from "../util/tryCatch.js";
-import { createPledge } from "../logic/pledges/pledges.js";
+import { createPledge } from "../logic/pledges/index.js";
 
 export class CreatePledgeCommand extends Command {
 	public constructor(context: Command.LoaderContext, options: Command.Options) {
@@ -31,6 +31,8 @@ export class CreatePledgeCommand extends Command {
 	public override async chatInputRun(
 		interaction: Command.ChatInputCommandInteraction
 	) {
+		await interaction.deferReply();
+		
 		const targetUser = interaction.options.getUser("user", true);
 		const value = interaction.options.getInteger("amount", true);
 
@@ -42,11 +44,11 @@ export class CreatePledgeCommand extends Command {
 		);
 
 		if (error) {
-			await interaction.reply(`Error: ${error.message}`);
+			await interaction.editReply(`Error: ${error.message}`);
 			return;
 		}
 
-		await interaction.reply(
+		await interaction.editReply(
 			`Recorded a pledge of $${pledge.value} by ${targetUser}`
 		);
 	}

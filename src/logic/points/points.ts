@@ -23,3 +23,7 @@ export async function getPoints(id: number) {
 		where: (points, { eq }) => eq(points.id, id),
 	});
 }
+
+export async function getAllPoints() {
+	return db.query.points.findMany();
+}
