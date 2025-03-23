@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist",
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		
+		"strict": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noFallthroughCasesInSwitch": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"noUnusedParameters": true,
+		"noUnusedLocals": true,
+	}
+}

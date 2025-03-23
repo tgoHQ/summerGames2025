@@ -1,0 +1,29 @@
+{
+	"name": "summergames2025",
+	"repository": "https://github.com/tgoHQ/summerGames2025",
+	"private": true,
+	"main": "dist/src/index.js",
+	"source": "src/index.ts",
+	"type": "module",
+	"scripts": {
+		"start": "node .",
+		"dev": "tsc && node .",
+		"build": "tsc",
+		"check": "tsc --noEmit",
+		"format": "prettier --write \"src/**/*.ts\"",
+		"studio": "drizzle-kit studio"
+	},
+	"dependencies": {
+		"@neondatabase/serverless": "^0.10.4",
+		"@sapphire/framework": "^5.3.2",
+		"discord.js": "^14.18.0",
+		"drizzle-orm": "^0.41.0",
+		"envalid": "^8.0.0",
+		"typescript": "^5.8.2"
+	},
+	"devDependencies": {
+		"@types/node": "^22.13.11",
+		"dotenv": "^16.4.7",
+		"drizzle-kit": "^0.30.5"
+	}
+}
