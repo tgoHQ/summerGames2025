@@ -27,11 +27,11 @@ export async function generatePledgeBoard() {
 	const pledges = await getAllPledges();
 
 	return `
-	# Pledges - Total $${pledges.reduce((acc, pledge) => acc + pledge.value, 0)} USD.
+	# Pledges - Total $${pledges.reduce((acc, pledge) => acc + pledge.value, 0).toFixed(2)} USD
 
 	These are the donation pledges that have been made. At the end of the games, all the money will go to the winning team's nonprofit.
 
-	${pledges.map((pledge) => `- $${pledge.value} from <@${pledge.id}>`).join("\n")}
+	${pledges.map((pledge) => `- $${pledge.value.toFixed(2)} from <@${pledge.id}>`).join("\n")}
 
 	Open a ticket with </tickets open:839848848003825673> to make a pledge yourself!
 	`.replaceAll("	", "");
@@ -39,5 +39,5 @@ export async function generatePledgeBoard() {
 
 export async function updatePledgeBoard() {
 	const content = await generatePledgeBoard();
-	await replaceChannelContent(await CHANNEL_PLEDGES(), content);
+	await replaceChannelContent(await CHANNEL_PLEDGES(), [content]);
 }

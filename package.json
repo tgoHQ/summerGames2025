@@ -1,5 +1,5 @@
 {
-	"name": "summergames2025",
+	"name": "springgames2025",
 	"repository": "https://github.com/tgoHQ/summerGames2025",
 	"private": true,
 	"main": "dist/src/index.js",

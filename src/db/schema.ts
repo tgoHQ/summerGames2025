@@ -5,15 +5,21 @@ import {
 	decimal,
 	serial,
 	timestamp,
+	pgEnum,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+
 
 export const teams = pgTable("teams", {
 	id: serial().primaryKey(),
 	name: text().notNull().unique(),
-	//todo beneficiary name
-	//todo beneficiary link
-	//todo beneficiary blurb
+	beneficiaryName: text("beneficiary_name").notNull(),
+	beneficiaryLink: text("beneficiary_link").notNull(),
+	beneficiaryBlurb: text("beneficiary_blurb").notNull(),
 });
+export const teamRelations = relations(teams, ({ many }) => ({
+	competitors: many(competitors),
+}));
 
 export const competitors = pgTable("competitors", {
 	id: text().primaryKey(),
@@ -21,6 +27,20 @@ export const competitors = pgTable("competitors", {
 		.references(() => teams.id)
 		.notNull(),
 });
+export const competitorRelations = relations(competitors, ({ one, many }) => ({
+	team: one(teams, {
+		fields: [competitors.teamId],
+		references: [teams.id],
+	}),
+	points: many(points),
+}));
+
+export const activityTypeEnum = pgEnum("activityType", [
+	"hiking",
+	"cycling",
+	"swimming",
+	"paddling",
+]);
 
 export const points = pgTable("points", {
 	id: serial().primaryKey(),
@@ -29,11 +49,18 @@ export const points = pgTable("points", {
 		.notNull(),
 	value: decimal({ mode: "number" }).notNull(),
 	date: timestamp({ mode: "date" }).notNull(),
-	//todo type
+	type: activityTypeEnum().notNull(),
 	//todo link to message or thread with proof
 });
 
+export const pointsRelations = relations(points, ({ one }) => ({
+	competitor: one(competitors, {
+		fields: [points.competitorId],
+		references: [competitors.id],
+	}),
+}));
+
 export const pledges = pgTable("pledges", {
 	id: text().primaryKey(),
-	value: integer().notNull(),
+	value: decimal({mode: "number"}).notNull(),
 });

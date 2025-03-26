@@ -78,9 +78,9 @@ export class AwardPointsCommand extends Command {
 		const [points, error] = await tryCatch(
 			createPoints({
 				competitorId: targetUser.id,
-				//todo
 				date: new Date(),
 				value: pointValue,
+				type: pointType.id,
 			})
 		);
 

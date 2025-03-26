@@ -15,3 +15,12 @@ async function fetchChannel<T extends ChannelType>(
 
 export const CHANNEL_PLEDGES = () =>
 	fetchChannel(env.CHANNEL_PLEDGES_ID, ChannelType.GuildText);
+
+export const CHANNEL_TOTALS = () =>
+	fetchChannel(env.CHANNEL_TOTALS_ID, ChannelType.GuildText);
+
+export const CHANNEL_TEAMS = () =>
+	fetchChannel(env.CHANNEL_TEAMS_ID, ChannelType.GuildText);
+
+export const CHANNEL_COMPETITORS = () =>
+	fetchChannel(env.CHANNEL_COMPETITORS_ID, ChannelType.GuildText);

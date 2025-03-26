@@ -8,4 +8,7 @@ export const env = cleanEnv(process.env, {
 	DATABASE_URL: str(),
 
 	CHANNEL_PLEDGES_ID: str(),
+	CHANNEL_TOTALS_ID: str(),
+	CHANNEL_TEAMS_ID: str(),
+	CHANNEL_COMPETITORS_ID: str(),
 });

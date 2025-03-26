@@ -1,28 +1,61 @@
 import { db } from "../../db/index.js";
-import { teams, competitors } from "../../db/schema.js";
-import { maxCompetitorsPerTeam } from "../../config.js";
+import { teams } from "../../db/schema.js";
+import { replaceChannelContent } from "../leaderboard/index.js";
+import { CHANNEL_TEAMS } from "../../util/loadDiscordObjects.js";
+import { renderPointsBreakdownByType } from "../points/points.js";
 
 export async function createTeam(opts: CreateTeamOpts) {
 	return (await db.insert(teams).values(opts).returning())[0];
 }
 type CreateTeamOpts = {
 	name: string;
+	beneficiaryName: string;
+	beneficiaryLink: string;
+	beneficiaryBlurb: string;
 };
 
-export async function addCompetitor(opts: AddCompetitorOpts) {
+async function generateTeamsBoard() {
+	//todo fill in the content of this
 
-	// get the number of competitors already in the team
-	const competitorsInTeam = await db.query.competitors.findMany({
-		where: (competitors, { eq }) => eq(competitors.teamId, opts.teamId),
+	const teams = await db.query.teams.findMany({
+		with: {
+			competitors: {
+				with: {
+					points: true,
+				},
+			},
+		},
 	});
 
-	if (competitorsInTeam.length >= maxCompetitorsPerTeam) {
-		throw new Error(`Team already has max number of competitors (${maxCompetitorsPerTeam})`);
+	const teamStrings: string[] = [];
+
+	for (const team of teams) {
+		//put all the points in a single array
+		const points = team.competitors.flatMap((competitor) => competitor.points);
+
+		const totalPoints = points.reduce((acc, point) => acc + point.value, 0);
+
+		const pointsBreakdown = renderPointsBreakdownByType(points);
+
+		teamStrings.push(
+			`
+			## ${team.name} - ${Math.round(totalPoints)} points
+			${team.competitors.map((competitor) => `<@${competitor.id}>`).join(", ")}
+			**Supporting [${team.beneficiaryName}](${team.beneficiaryLink})**
+			${team.beneficiaryBlurb}
+			${pointsBreakdown}
+			`.replaceAll("	", "")
+		);
 	}
-	
-	return (await db.insert(competitors).values(opts).returning())[0];
+
+	return `
+	# Teams Leaderboard
+
+	${teamStrings.join("\n")}
+	`.replaceAll("	", "");
 }
-type AddCompetitorOpts = {
-	id: string;
-	teamId: number;
-};
+
+export async function updateTeamsBoard() {
+	const content = await generateTeamsBoard();
+	await replaceChannelContent(await CHANNEL_TEAMS(), [content]);
+}

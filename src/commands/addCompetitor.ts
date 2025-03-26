@@ -1,6 +1,6 @@
 import { Command } from "@sapphire/framework";
 import { tryCatch } from "../util/tryCatch.js";
-import { addCompetitor } from "../logic/teams/index.js";
+import { createCompetitor } from "../logic/competitors/index.js";
 
 export class AddCompetitorCommand extends Command {
 	public constructor(context: Command.LoaderContext, options: Command.Options) {
@@ -34,7 +34,7 @@ export class AddCompetitorCommand extends Command {
 		const targetUser = interaction.options.getUser("user", true);
 
 		const [competitor, error] = await tryCatch(
-			addCompetitor({
+			createCompetitor({
 				id: targetUser.id,
 				teamId: interaction.options.getInteger("team", true),
 			})

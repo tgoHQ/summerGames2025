@@ -1,0 +1,1 @@
+//todo export a function that checks how many points a competitor has left in their cap, given a competitor, actitivty, and date

@@ -30,7 +30,7 @@ const client = new SapphireClient({
 		activities: [
 			//todo figure out how to set custom status with no activity type
 			{
-				name: "Summer Games 2025",
+				name: "Spring Games 2025",
 				type: ActivityType.Playing,
 			},
 		],

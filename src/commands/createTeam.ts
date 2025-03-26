@@ -18,6 +18,24 @@ export class CreateTeamCommand extends Command {
 						.setName("name")
 						.setDescription("name of the team")
 						.setRequired(true)
+			)
+				.addStringOption((option) =>
+					option
+						.setName("beneficiaryname")
+						.setDescription("name of the team's beneficiary")
+						.setRequired(true)
+				)
+				.addStringOption((option) =>
+					option
+						.setName("beneficiarylink")
+						.setDescription("link to the team's beneficiary")
+						.setRequired(true)
+				)
+				.addStringOption((option) =>
+					option
+						.setName("beneficiaryblurb")
+						.setDescription("blurb about the team's beneficiary")
+						.setRequired(true)
 				);
 		});
 	}
@@ -28,6 +46,9 @@ export class CreateTeamCommand extends Command {
 		const [team, error] = await tryCatch(
 			createTeam({
 				name: interaction.options.getString("name", true),
+				beneficiaryName: interaction.options.getString("beneficiaryname", true),
+				beneficiaryLink: interaction.options.getString("beneficiarylink", true),
+				beneficiaryBlurb: interaction.options.getString("beneficiaryblurb", true),
 			})
 		);
 

@@ -1,2 +1,2 @@
-export const maxCompetitorsPerTeam = 1;
+export const maxCompetitorsPerTeam = 3;
 export const maxMilesPerWeek = 50;

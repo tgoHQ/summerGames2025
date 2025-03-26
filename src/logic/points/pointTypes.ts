@@ -1,24 +1,24 @@
 export const pointTypes: PointType[] = [
 	{
-		name: "hiking / running / walking",
+		name: "Hiking, Running",
 		pastTense: "hiked",
 		id: "hiking",
 		pointsPerMile: 1,
 	},
 	{
-		name: "cycling",
+		name: "Cycling",
 		pastTense: "cycled",
 		id: "cycling",
 		pointsPerMile: 0.2,
 	},
 	{
-		name: "swimming",
+		name: "Swimming",
 		pastTense: "swam",
 		id: "swimming",
 		pointsPerMile: 5,
 	},
 	{
-		name: "paddling",
+		name: "Paddling",
 		pastTense: "paddled",
 		id: "paddling",
 		pointsPerMile: 1,
@@ -28,6 +28,10 @@ export const pointTypes: PointType[] = [
 type PointType = {
 	name: string;
 	pastTense: string;
-	id: string;
+	id: PointTypeId;
 	pointsPerMile: number;
 };
+
+import { activityTypeEnum } from "../../db/schema";
+
+export type PointTypeId = (typeof activityTypeEnum.enumValues)[number]; // "admin" | "user" | "guest"
