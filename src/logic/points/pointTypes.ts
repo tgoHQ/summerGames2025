@@ -34,4 +34,4 @@ type PointType = {
 
 import { activityTypeEnum } from "../../db/schema";
 
-export type PointTypeId = (typeof activityTypeEnum.enumValues)[number]; // "admin" | "user" | "guest"
+export type PointTypeId = (typeof activityTypeEnum.enumValues)[number];

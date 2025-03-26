@@ -78,6 +78,7 @@ export class AwardPointsCommand extends Command {
 		const [points, error] = await tryCatch(
 			createPoints({
 				competitorId: targetUser.id,
+				//todo parse date from text input and handle error case where it's not parseable
 				date: new Date(),
 				value: pointValue,
 				type: pointType.id,
