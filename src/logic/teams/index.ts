@@ -15,7 +15,6 @@ type CreateTeamOpts = {
 };
 
 async function generateTeamsBoard() {
-	//todo fill in the content of this
 
 	const teams = await db.query.teams.findMany({
 		with: {

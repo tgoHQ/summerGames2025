@@ -28,7 +28,6 @@ const client = new SapphireClient({
 	],
 	presence: {
 		activities: [
-			//todo figure out how to set custom status with no activity type
 			{
 				name: "Spring Games 2025",
 				type: ActivityType.Playing,
