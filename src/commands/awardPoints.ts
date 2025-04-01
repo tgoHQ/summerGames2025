@@ -30,7 +30,7 @@ export class AwardPointsCommand extends Command {
 						)
 						.setRequired(true)
 				)
-				.addIntegerOption((option) =>
+				.addStringOption((option) =>
 					option
 						.setName("distance")
 						.setDescription("distance of this activity")
@@ -59,9 +59,18 @@ export class AwardPointsCommand extends Command {
 	public override async chatInputRun(
 		interaction: Command.ChatInputCommandInteraction
 	) {
+		await interaction.deferReply();
+
 		const targetUser = interaction.options.getUser("user", true);
-		const distance = interaction.options.getInteger("distance", true);
+		const distanceString = interaction.options.getString("distance", true);
 		const unit = interaction.options.getString("unit", true);
+
+		const distance = parseFloat(distanceString);
+
+		if (isNaN(distance)) {
+			await interaction.editReply(`Invalid distance: ${distanceString}`);
+			return;
+		}
 
 		const miles = unit === "kilometers" ? kmToMi(distance) : distance;
 
@@ -73,7 +82,7 @@ export class AwardPointsCommand extends Command {
 			throw new Error(`Invalid point type`);
 		}
 
-		const pointValue = pointType.pointsPerMile * miles;
+		const pointValue = pointType.pointRatio * miles;
 
 		const [points, error] = await tryCatch(
 			createPoints({
@@ -86,11 +95,11 @@ export class AwardPointsCommand extends Command {
 		);
 
 		if (error) {
-			await interaction.reply(`Error: ${error.message}`);
+			await interaction.editReply(`Error: ${error.message}`);
 			return;
 		}
 
-		await interaction.reply(
+		await interaction.editReply(
 			`Awarded ${pointValue} points to ${targetUser} for ${distance} ${unit} of ${pointType.name}. ID \`${points.id}\`.`
 		);
 	}

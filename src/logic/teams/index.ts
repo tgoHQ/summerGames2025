@@ -15,7 +15,6 @@ type CreateTeamOpts = {
 };
 
 async function generateTeamsBoard() {
-
 	const teams = await db.query.teams.findMany({
 		with: {
 			competitors: {
@@ -38,8 +37,10 @@ async function generateTeamsBoard() {
 
 		teamStrings.push(
 			`
+			.
 			## ${team.name} - ${Math.round(totalPoints)} points
 			${team.competitors.map((competitor) => `<@${competitor.id}>`).join(", ")}
+			
 			**Supporting [${team.beneficiaryName}](${team.beneficiaryLink})**
 			${team.beneficiaryBlurb}
 			${pointsBreakdown}
@@ -47,14 +48,10 @@ async function generateTeamsBoard() {
 		);
 	}
 
-	return `
-	# Teams Leaderboard
-
-	${teamStrings.join("\n")}
-	`.replaceAll("	", "");
+	return ["# Teams Leaderboard", ...teamStrings];
 }
 
 export async function updateTeamsBoard() {
 	const content = await generateTeamsBoard();
-	await replaceChannelContent(await CHANNEL_TEAMS(), [content]);
+	await replaceChannelContent(await CHANNEL_TEAMS(), content);
 }

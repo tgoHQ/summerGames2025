@@ -4,13 +4,22 @@ import { eq } from "drizzle-orm/expressions";
 import type { PointTypeId } from "./pointTypes.js";
 import { pointTypes } from "./pointTypes.js";
 import { updateAllBoards } from "../leaderboard/index.js";
-import { InferSelectModel } from "drizzle-orm";
+import type { InferSelectModel } from "drizzle-orm";
 import { miToKm } from "../../util/convertUnits.js";
+import { maxPointsPerWeek } from "../../config.js";
 
 type Point = InferSelectModel<typeof points>;
 
 export async function createPoints(opts: CreatePointsOpts) {
 	// todo check to make sure the user hasn't hit their cap. do this in a separate function
+
+	const capCheck = await checkCap(opts);
+
+	if (!capCheck.valid) {
+		throw new Error(
+			`Cannot create points because this would exceed the weekly point cap by ${capCheck.surplus}`
+		);
+	}
 
 	//create points in db
 	const point = (await db.insert(points).values(opts).returning())[0];
@@ -25,6 +34,28 @@ type CreatePointsOpts = {
 	value: number;
 	type: PointTypeId;
 };
+
+async function checkCap(opts: CreatePointsOpts) {
+	const points = await db.query.points.findMany({
+		//todo filter by date here too
+		where: (points, { eq }) =>
+			eq(points.competitorId, opts.competitorId) && eq(points.type, opts.type),
+	});
+
+	const thisTypeTotalPoints = points.reduce(
+		(acc, point) => acc + point.value,
+		0
+	);
+
+	if (thisTypeTotalPoints + opts.value > maxPointsPerWeek) {
+		return {
+			valid: false,
+			surplus: thisTypeTotalPoints + opts.value - maxPointsPerWeek,
+		};
+	}
+
+	return { valid: true };
+}
 
 export async function deletePoints(id: number) {
 	await db.delete(points).where(eq(points.id, id));
@@ -52,7 +83,7 @@ export function renderPointsBreakdownByType(points: Point[]) {
 			(acc, point) => acc + point.value,
 			0
 		);
-		const miles = typeTotalPoints / pointType.pointsPerMile;
+		const miles = typeTotalPoints / pointType.pointRatio;
 		const kilometers = miToKm(miles);
 
 		typeStrings.push(

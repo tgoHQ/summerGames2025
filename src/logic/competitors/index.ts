@@ -42,6 +42,7 @@ async function generateCompetitorsBoard() {
 
 		competitorStrings.push(
 			`
+			.
 			## <@${competitor.id}> - ${competitorPoints} points
 			### ${competitor.team.name}
 						
@@ -50,14 +51,10 @@ async function generateCompetitorsBoard() {
 		);
 	}
 
-	return `
-	# Individuals Leaderboard
-
-	${competitorStrings.join("\n")}
-	`.replaceAll("	", "");
+	return ["# Individuals Leaderboard", ...competitorStrings];
 }
 
 export async function updateCompetitorsBoard() {
 	const content = await generateCompetitorsBoard();
-	await replaceChannelContent(await CHANNEL_COMPETITORS(), [content]);
+	await replaceChannelContent(await CHANNEL_COMPETITORS(), content);
 }
