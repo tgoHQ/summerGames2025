@@ -54,6 +54,20 @@ async function generateCompetitorsBoard() {
 	return ["# Individuals Leaderboard", ...competitorStrings];
 }
 
+// function sliceReducer<T>(data: T[], chunkSize: number) {
+// 	return (
+// 		data.reduce((result, _, i) => {
+// 			const slice = data.slice(chunkSize * i, chunkSize * (i + 1));
+// 			if (slice.length) result.push(slice);
+// 			return result;
+// 		}, []),
+		
+// 	);
+// }
+
+// const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+// const chunked = input.reduce(sliceReducer(input, 5), []);
+
 export async function updateCompetitorsBoard() {
 	const content = await generateCompetitorsBoard();
 	await replaceChannelContent(await CHANNEL_COMPETITORS(), content);

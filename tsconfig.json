@@ -16,5 +16,6 @@
 		"allowUnusedLabels": false,
 		"noUnusedParameters": true,
 		"noUnusedLocals": true,
+		"allowSyntheticDefaultImports": true
 	}
 }
