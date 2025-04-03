@@ -38,8 +38,11 @@ type CreatePointsOpts = {
 async function checkCap(opts: CreatePointsOpts) {
 	const points = await db.query.points.findMany({
 		//todo filter by date here too
-		where: (points, { eq }) =>
-			eq(points.competitorId, opts.competitorId) && eq(points.type, opts.type),
+		where: (points, { eq, and }) =>
+			and(
+				eq(points.competitorId, opts.competitorId),
+				eq(points.type, opts.type)
+			),
 	});
 
 	const thisTypeTotalPoints = points.reduce(
