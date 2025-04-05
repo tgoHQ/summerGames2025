@@ -26,9 +26,6 @@ export async function replaceChannelContent(
 }
 
 export async function updateAllBoards() {
-	await updateTotalsBoard();
-	await updateTeamsBoard();
-	await updateCompetitorsBoard();
-	await updatePledgeBoard();
+	await Promise.all([updateTotalsBoard(), updateTeamsBoard(), updateCompetitorsBoard(), updatePledgeBoard()]);
 }
 
