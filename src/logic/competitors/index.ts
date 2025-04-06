@@ -43,7 +43,7 @@ async function generateCompetitorsBoard() {
 		competitorStrings.push(
 			`
 			.
-			## <@${competitor.id}> - ${competitorPoints} points
+			## <@${competitor.id}> - ${competitorPoints.toFixed(2)} points
 			### ${competitor.team.name}
 						
 			${renderPointsBreakdownByType(competitor.points)}

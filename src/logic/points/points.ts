@@ -90,7 +90,7 @@ export function renderPointsBreakdownByType(points: Point[]) {
 		const kilometers = miToKm(miles);
 
 		typeStrings.push(
-			` - **${pointType.name}:** ${typeTotalPoints} points / ${miles.toFixed(
+			` - **${pointType.name}:** ${typeTotalPoints.toFixed(2)} points / ${miles.toFixed(
 				1
 			)} mi / ${kilometers.toFixed(1)} km`
 		);

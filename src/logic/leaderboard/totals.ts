@@ -25,7 +25,7 @@ async function generateTotalsBoard() {
 
 		typeStrings.push(
 			`## ${pointType.name}
-			- ${typeTotalPoints} points (${Math.round(
+			- ${typeTotalPoints.toFixed(2)} points (${Math.round(
 				(100 * typeTotalPoints) / totalPoints
 			)}% of total)
 			- ${miles.toFixed(1)} miles / ${kilometers.toFixed(1)} kilometers`
