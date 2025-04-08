@@ -2,13 +2,13 @@ import { db } from "../../db/index.js";
 import { points } from "../../db/schema.js";
 import { eq } from "drizzle-orm/expressions";
 import type { PointTypeId } from "./pointTypes.js";
-import { pointTypes } from "./pointTypes.js";
+// import { pointTypes } from "./pointTypes.js";
 import { updateAllBoards } from "../leaderboard/index.js";
-import type { InferSelectModel } from "drizzle-orm";
-import { miToKm } from "../../util/convertUnits.js";
+// import type { InferSelectModel } from "drizzle-orm";
+// import { miToKm } from "../../util/convertUnits.js";
 import { maxPointsPerWeek } from "../../config.js";
 
-type Point = InferSelectModel<typeof points>;
+// type Point = InferSelectModel<typeof points>;
 
 export async function createPoints(opts: CreatePointsOpts) {
 	// todo check to make sure the user hasn't hit their cap. do this in a separate function
