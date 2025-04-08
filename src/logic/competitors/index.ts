@@ -1,9 +1,7 @@
 import { db } from "../../db/index.js";
 import { competitors } from "../../db/schema.js";
 import { maxCompetitorsPerTeam } from "../../config.js";
-import { replaceChannelContent } from "../leaderboard/index.js";
-import { CHANNEL_COMPETITORS } from "../../util/loadDiscordObjects.js";
-import { renderPointsBreakdownByType } from "../points/points.js";
+
 
 export async function createCompetitor(opts: AddCompetitorOpts) {
 	// get the number of competitors already in the team
@@ -24,35 +22,38 @@ type AddCompetitorOpts = {
 	teamId: number;
 };
 
-async function generateCompetitorsBoard() {
-	const competitors = await db.query.competitors.findMany({
-		with: {
-			team: true,
-			points: true,
-		},
-	});
+// import { replaceChannelContent } from "../leaderboard/index.js";
+// import { CHANNEL_COMPETITORS } from "../../util/loadDiscordObjects.js";
+// import { renderPointsBreakdownByType } from "../points/points.js";
+// async function generateCompetitorsBoard() {
+// 	const competitors = await db.query.competitors.findMany({
+// 		with: {
+// 			team: true,
+// 			points: true,
+// 		},
+// 	});
 
-	const competitorStrings: string[] = [];
+// 	const competitorStrings: string[] = [];
 
-	for (const competitor of competitors) {
-		const competitorPoints = competitor.points.reduce(
-			(acc, point) => acc + point.value,
-			0
-		);
+// 	for (const competitor of competitors) {
+// 		const competitorPoints = competitor.points.reduce(
+// 			(acc, point) => acc + point.value,
+// 			0
+// 		);
 
-		competitorStrings.push(
-			`
-			.
-			## <@${competitor.id}> - ${competitorPoints.toFixed(2)} points
-			### ${competitor.team.name}
+// 		competitorStrings.push(
+// 			`
+// 			.
+// 			## <@${competitor.id}> - ${competitorPoints.toFixed(2)} points
+// 			### ${competitor.team.name}
 						
-			${renderPointsBreakdownByType(competitor.points)}
-			`.replaceAll("	", "")
-		);
-	}
+// 			${renderPointsBreakdownByType(competitor.points)}
+// 			`.replaceAll("	", "")
+// 		);
+// 	}
 
-	return ["# Individuals Leaderboard", ...competitorStrings];
-}
+// 	return ["# Individuals Leaderboard", ...competitorStrings];
+// }
 
 // function sliceReducer<T>(data: T[], chunkSize: number) {
 // 	return (
@@ -68,7 +69,7 @@ async function generateCompetitorsBoard() {
 // const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // const chunked = input.reduce(sliceReducer(input, 5), []);
 
-export async function updateCompetitorsBoard() {
-	const content = await generateCompetitorsBoard();
-	await replaceChannelContent(await CHANNEL_COMPETITORS(), content);
-}
+// export async function updateCompetitorsBoard() {
+// 	const content = await generateCompetitorsBoard();
+// 	await replaceChannelContent(await CHANNEL_COMPETITORS(), content);
+// }

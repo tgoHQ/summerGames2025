@@ -46,12 +46,11 @@ export class AwardPointsCommand extends Command {
 						.setDescription("the distance unit")
 						.setRequired(true)
 				)
-				.addStringOption((option) =>
+				.addIntegerOption((option) =>
 					option
-						//todo
-						.setName("date")
-						.setDescription("date on which the points were earned")
-						.setRequired(true)
+						.setName("dateoffset")
+						.setDescription("date offset. if it happened 48 hours ago, put -2")
+						.setRequired(false)
 				);
 		});
 	}
@@ -84,11 +83,16 @@ export class AwardPointsCommand extends Command {
 
 		const pointValue = pointType.pointRatio * miles;
 
+		const dateoffset = interaction.options.getInteger("date");
+
+		const date = dateoffset
+			? new Date(Date.now() + dateoffset * 60 * 60 * 1000)
+			: new Date();
+
 		const [points, error] = await tryCatch(
 			createPoints({
 				competitorId: targetUser.id,
-				//todo parse date from text input and handle error case where it's not parseable
-				date: new Date(),
+				date,
 				value: pointValue,
 				type: pointType.id,
 			})
@@ -100,7 +104,7 @@ export class AwardPointsCommand extends Command {
 		}
 
 		await interaction.editReply(
-			`Awarded ${pointValue} points to ${targetUser} for ${distance} ${unit} of ${pointType.name}. ID \`${points.id}\`.`
+			`Awarded ${pointValue} points to ${targetUser} for ${distance} ${unit} of ${pointType.name}. Date \`${date}\`. ID \`${points.id}\`.`
 		);
 	}
 }

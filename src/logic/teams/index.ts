@@ -1,8 +1,8 @@
 import { db } from "../../db/index.js";
 import { teams } from "../../db/schema.js";
-import { replaceChannelContent } from "../leaderboard/index.js";
-import { CHANNEL_TEAMS } from "../../util/loadDiscordObjects.js";
-import { renderPointsBreakdownByType } from "../points/points.js";
+// import { replaceChannelContent } from "../leaderboard/index.js";
+// import { CHANNEL_TEAMS } from "../../util/loadDiscordObjects.js";
+// import { renderPointsBreakdownByType } from "../points/points.js";
 
 export async function createTeam(opts: CreateTeamOpts) {
 	return (await db.insert(teams).values(opts).returning())[0];
@@ -14,44 +14,44 @@ type CreateTeamOpts = {
 	beneficiaryBlurb: string;
 };
 
-async function generateTeamsBoard() {
-	const teams = await db.query.teams.findMany({
-		with: {
-			competitors: {
-				with: {
-					points: true,
-				},
-			},
-		},
-	});
+// async function generateTeamsBoard() {
+// 	const teams = await db.query.teams.findMany({
+// 		with: {
+// 			competitors: {
+// 				with: {
+// 					points: true,
+// 				},
+// 			},
+// 		},
+// 	});
 
-	const teamStrings: string[] = [];
+// 	const teamStrings: string[] = [];
 
-	for (const team of teams) {
-		//put all the points in a single array
-		const points = team.competitors.flatMap((competitor) => competitor.points);
+// 	for (const team of teams) {
+// 		//put all the points in a single array
+// 		const points = team.competitors.flatMap((competitor) => competitor.points);
 
-		const totalPoints = points.reduce((acc, point) => acc + point.value, 0);
+// 		const totalPoints = points.reduce((acc, point) => acc + point.value, 0);
 
-		const pointsBreakdown = renderPointsBreakdownByType(points);
+// 		const pointsBreakdown = renderPointsBreakdownByType(points);
 
-		teamStrings.push(
-			`
-			.
-			## ${team.name} - ${Math.round(totalPoints)} points
-			${team.competitors.map((competitor) => `<@${competitor.id}>`).join(", ")}
+// 		teamStrings.push(
+// 			`
+// 			.
+// 			## ${team.name} - ${Math.round(totalPoints)} points
+// 			${team.competitors.map((competitor) => `<@${competitor.id}>`).join(", ")}
 			
-			**Supporting [${team.beneficiaryName}](${team.beneficiaryLink})**
-			${team.beneficiaryBlurb}
-			${pointsBreakdown}
-			`.replaceAll("	", "")
-		);
-	}
+// 			**Supporting [${team.beneficiaryName}](${team.beneficiaryLink})**
+// 			${team.beneficiaryBlurb}
+// 			${pointsBreakdown}
+// 			`.replaceAll("	", "")
+// 		);
+// 	}
 
-	return ["# Teams Leaderboard", ...teamStrings];
-}
+// 	return ["# Teams Leaderboard", ...teamStrings];
+// }
 
-export async function updateTeamsBoard() {
-	const content = await generateTeamsBoard();
-	await replaceChannelContent(await CHANNEL_TEAMS(), content);
-}
+// export async function updateTeamsBoard() {
+// 	const content = await generateTeamsBoard();
+// 	await replaceChannelContent(await CHANNEL_TEAMS(), content);
+// }

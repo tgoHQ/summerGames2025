@@ -19,8 +19,8 @@ export const CHANNEL_PLEDGES = () =>
 export const CHANNEL_TOTALS = () =>
 	fetchChannel(env.CHANNEL_TOTALS_ID, ChannelType.GuildText);
 
-export const CHANNEL_TEAMS = () =>
-	fetchChannel(env.CHANNEL_TEAMS_ID, ChannelType.GuildText);
+// export const CHANNEL_TEAMS = () =>
+// 	fetchChannel(env.CHANNEL_TEAMS_ID, ChannelType.GuildText);
 
-export const CHANNEL_COMPETITORS = () =>
-	fetchChannel(env.CHANNEL_COMPETITORS_ID, ChannelType.GuildText);
+// export const CHANNEL_COMPETITORS = () =>
+// 	fetchChannel(env.CHANNEL_COMPETITORS_ID, ChannelType.GuildText);

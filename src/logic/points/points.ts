@@ -45,6 +45,8 @@ async function checkCap(opts: CreatePointsOpts) {
 			),
 	});
 
+	points.filter((point) => point.date);
+
 	const thisTypeTotalPoints = points.reduce(
 		(acc, point) => acc + point.value,
 		0
@@ -74,27 +76,27 @@ export async function getAllPoints() {
 	return db.query.points.findMany();
 }
 
-export function renderPointsBreakdownByType(points: Point[]) {
-	const typeStrings: string[] = [];
+// export function renderPointsBreakdownByType(points: Point[]) {
+// 	const typeStrings: string[] = [];
 
-	for (const pointType of pointTypes) {
-		const thisTypePoints = points.filter(
-			(point) => point.type === pointType.id
-		);
+// 	for (const pointType of pointTypes) {
+// 		const thisTypePoints = points.filter(
+// 			(point) => point.type === pointType.id
+// 		);
 
-		const typeTotalPoints = thisTypePoints.reduce(
-			(acc, point) => acc + point.value,
-			0
-		);
-		const miles = typeTotalPoints / pointType.pointRatio;
-		const kilometers = miToKm(miles);
+// 		const typeTotalPoints = thisTypePoints.reduce(
+// 			(acc, point) => acc + point.value,
+// 			0
+// 		);
+// 		const miles = typeTotalPoints / pointType.pointRatio;
+// 		const kilometers = miToKm(miles);
 
-		typeStrings.push(
-			` - **${pointType.name}:** ${typeTotalPoints.toFixed(2)} points / ${miles.toFixed(
-				1
-			)} mi / ${kilometers.toFixed(1)} km`
-		);
-	}
+// 		typeStrings.push(
+// 			` - **${pointType.name}:** ${typeTotalPoints.toFixed(2)} points / ${miles.toFixed(
+// 				1
+// 			)} mi / ${kilometers.toFixed(1)} km`
+// 		);
+// 	}
 
-	return typeStrings.join("\n");
-}
+// 	return typeStrings.join("\n");
+// }

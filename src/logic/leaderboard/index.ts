@@ -2,8 +2,8 @@ import { TextChannel } from "discord.js";
 
 import { updatePledgeBoard } from "../pledges/index.js";
 import { updateTotalsBoard } from "./totals.js";
-import { updateTeamsBoard } from "../teams/index.js";
-import { updateCompetitorsBoard } from "../competitors/index.js";
+// import { updateTeamsBoard } from "../teams/index.js";
+// import { updateCompetitorsBoard } from "../competitors/index.js";
 
 
 export async function replaceChannelContent(
@@ -26,6 +26,6 @@ export async function replaceChannelContent(
 }
 
 export async function updateAllBoards() {
-	await Promise.all([updateTotalsBoard(), updateTeamsBoard(), updateCompetitorsBoard(), updatePledgeBoard()]);
+	await Promise.all([updateTotalsBoard(), updatePledgeBoard()]);
 }
 

@@ -41,5 +41,3 @@ const client = new SapphireClient({
 });
 
 await client.login(env.TOKEN);
-
-import "./api/api.js";

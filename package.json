@@ -19,11 +19,9 @@
 		"discord.js": "^14.18.0",
 		"drizzle-orm": "^0.41.0",
 		"envalid": "^8.0.0",
-		"express": "^5.1.0",
 		"typescript": "^5.8.2"
 	},
 	"devDependencies": {
-		"@types/express": "^5.0.1",
 		"@types/node": "^22.13.11",
 		"dotenv": "^16.4.7",
 		"drizzle-kit": "^0.30.5"
