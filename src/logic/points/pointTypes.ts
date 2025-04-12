@@ -30,8 +30,6 @@ type PointType = {
 	pastTense: string;
 	id: PointTypeId;
 	pointRatio: number;
-	// toValue: (any: any) => number;
-	// toStatString: (value: number) => string;
 };
 
 import { activityTypeEnum } from "../../db/schema";

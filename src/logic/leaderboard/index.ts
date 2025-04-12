@@ -2,9 +2,6 @@ import { TextChannel } from "discord.js";
 
 import { updatePledgeBoard } from "../pledges/index.js";
 import { updateTotalsBoard } from "./totals.js";
-// import { updateTeamsBoard } from "../teams/index.js";
-// import { updateCompetitorsBoard } from "../competitors/index.js";
-
 
 export async function replaceChannelContent(
 	channel: TextChannel,
