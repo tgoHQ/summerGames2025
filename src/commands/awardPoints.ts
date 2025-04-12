@@ -83,10 +83,10 @@ export class AwardPointsCommand extends Command {
 
 		const pointValue = pointType.pointRatio * miles;
 
-		const dateoffset = interaction.options.getInteger("date");
+		const dateoffset = interaction.options.getInteger("dateoffset");
 
 		const date = dateoffset
-			? new Date(Date.now() + dateoffset * 60 * 60 * 1000)
+			? new Date(Date.now() + dateoffset * 24 * 60 * 60 * 1000)
 			: new Date();
 
 		const [points, error] = await tryCatch(
