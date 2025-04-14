@@ -3,6 +3,9 @@ import { tryCatch } from "../util/tryCatch.js";
 import { createPoints } from "../logic/points/points.js";
 import { pointTypes } from "../logic/points/pointTypes.js";
 import { kmToMi } from "../util/convertUnits.js";
+import { ChannelType } from "discord.js";
+import { env } from "../util/env.js";
+import { TAG_APPROVED } from "../util/loadDiscordObjects.js";
 
 export class AwardPointsCommand extends Command {
 	public constructor(context: Command.LoaderContext, options: Command.Options) {
@@ -13,8 +16,8 @@ export class AwardPointsCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry) {
 		registry.registerChatInputCommand((builder) => {
 			builder
-				.setName("awardpoints")
-				.setDescription("award points")
+				.setName("points")
+				.setDescription("award points to a competitor")
 				.addUserOption((option) =>
 					option
 						.setName("user")
@@ -60,6 +63,18 @@ export class AwardPointsCommand extends Command {
 	) {
 		await interaction.deferReply();
 
+		//check where the command was run
+		if (
+			!interaction.channel ||
+			interaction.channel.type !== ChannelType.PublicThread ||
+			interaction.channel.parent?.id !== env.CHANNEL_CLAIMS_ID
+		) {
+			await interaction.editReply(
+				`This command must be calleed from a thread in the claims channel.`
+			);
+			return;
+		}
+
 		const targetUser = interaction.options.getUser("user", true);
 		const distanceString = interaction.options.getString("distance", true);
 		const unit = interaction.options.getString("unit", true);
@@ -102,6 +117,9 @@ export class AwardPointsCommand extends Command {
 			await interaction.editReply(`Error: ${error.message}`);
 			return;
 		}
+
+		await interaction.channel.setAppliedTags([(await TAG_APPROVED()).id]);
+		await interaction.channel.setArchived(true);
 
 		await interaction.editReply(
 			`Awarded ${pointValue} points to ${targetUser} for ${distance} ${unit} of ${pointType.name}. Date \`${date}\`. ID \`${points.id}\`.`
