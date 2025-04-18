@@ -32,7 +32,6 @@ type CreatePointsOpts = {
 
 async function checkCap(opts: CreatePointsOpts) {
 	const points = await db.query.points.findMany({
-		//todo filter by date here too
 		where: (points, { eq, and }) =>
 			and(
 				eq(points.competitorId, opts.competitorId),
@@ -40,9 +39,18 @@ async function checkCap(opts: CreatePointsOpts) {
 			),
 	});
 
-	points.filter((point) => point.date);
+	// start is 7 days before the date of the points being created
+	const start = new Date(opts.date.getTime() - 1000 * 60 * 60 * 24 * 7);
+	// end is 7 days after the date of the points being created
+	const end = new Date(opts.date.getTime() + 1000 * 60 * 60 * 24 * 7);
 
-	const thisTypeTotalPoints = points.reduce(
+	const pointsFiltered = points.filter(
+		(point) =>
+			point.date.getTime() > start.getTime() &&
+			point.date.getTime() < end.getTime()
+	);
+
+	const thisTypeTotalPoints = pointsFiltered.reduce(
 		(acc, point) => acc + point.value,
 		0
 	);
